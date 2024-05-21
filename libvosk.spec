@@ -10,6 +10,7 @@ Summary: Speech recognition library
 URL: https://github.com/alphacep/vosk-api
 License: GPL
 Group: System/Libraries
+BuildRequires: %{mklibname -d fst}
 BuildRequires: cmake(kaldi)
 BuildSystem: cmake
 
