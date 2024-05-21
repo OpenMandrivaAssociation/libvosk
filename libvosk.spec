@@ -11,6 +11,8 @@ URL: https://github.com/alphacep/vosk-api
 License: GPL
 Group: System/Libraries
 BuildRequires: %{mklibname -d fst}
+BuildRequires: pkgconfig(lapack)
+BuildRequires: pkgconfig(openblas)
 BuildRequires: cmake(kaldi)
 BuildSystem: cmake
 
