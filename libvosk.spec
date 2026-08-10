@@ -4,13 +4,14 @@
 
 Name: libvosk
 Version: 0.3.50
-Release: 4
+Release: 5
 Source0: https://github.com/alphacep/vosk-api/archive/refs/tags/v%{version}.tar.gz
 Summary: Speech recognition library
 URL: https://github.com/alphacep/vosk-api
 License: GPL
 Group: System/Libraries
 BuildRequires: %{mklibname -d fst}
+BuildRequires: %{mklibname -d fstngram}
 BuildRequires: pkgconfig(lapack)
 BuildRequires: pkgconfig(openblas)
 BuildRequires: cmake(kaldi)

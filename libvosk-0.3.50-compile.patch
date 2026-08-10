@@ -1,7 +1,7 @@
 diff -up libvosk-0.3.50/CMakeLists.txt.omv~ libvosk-0.3.50/CMakeLists.txt
---- libvosk-0.3.50/CMakeLists.txt.omv~	2024-05-21 13:52:41.535382400 +0200
-+++ libvosk-0.3.50/CMakeLists.txt	2024-05-21 13:54:44.225477635 +0200
-@@ -10,10 +10,12 @@ add_library(vosk
+--- libvosk-0.3.50/CMakeLists.txt.omv~	2024-04-22 14:39:57.000000000 +0200
++++ libvosk-0.3.50/CMakeLists.txt	2026-08-10 19:14:48.258753272 +0200
+@@ -10,10 +10,16 @@ add_library(vosk
    src/recognizer.cc
    src/spk_model.cc
    src/vosk_api.cc
@@ -9,9 +9,12 @@ diff -up libvosk-0.3.50/CMakeLists.txt.omv~ libvosk-0.3.50/CMakeLists.txt
  )
  
  find_package(kaldi REQUIRED)
--target_link_libraries(vosk PUBLIC kaldi-base kaldi-online2 kaldi-rnnlm fstngram)
-+# FIXME is there a proper way to link to ngram-fst and if so, what is it?
-+target_link_libraries(vosk PUBLIC kaldi-base kaldi-online2 kaldi-rnnlm -Wl,-rpath,@LIBDIR@/fst @LIBDIR@/fst/ngram-fst.so)
+ target_link_libraries(vosk PUBLIC kaldi-base kaldi-online2 kaldi-rnnlm fstngram)
++# ngram-fst.so lives in %{_libdir}/fst (not on the default link path), so
++# consumers such as Wine's configure -lvosk test fail with --no-undefined.
++# Link the versioned libfstngram instead; keep the plugin dir on RUNPATH
++# for OpenFst's runtime FST-type loader.
++set_target_properties(vosk PROPERTIES INSTALL_RPATH "@LIBDIR@/fst")
  
  include(GNUInstallDirs)
  install(TARGETS vosk DESTINATION ${CMAKE_INSTALL_LIBDIR})
