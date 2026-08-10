@@ -4,7 +4,7 @@
 
 Name: libvosk
 Version: 0.3.50
-Release: 3
+Release: 4
 Source0: https://github.com/alphacep/vosk-api/archive/refs/tags/v%{version}.tar.gz
 Summary: Speech recognition library
 URL: https://github.com/alphacep/vosk-api
@@ -40,6 +40,8 @@ Development files (Headers etc.) for %{name}.
 %prep -a
 sed -i -e 's,@LIBDIR@,%{_libdir},g' CMakeLists.txt
 echo 'set_target_properties(vosk PROPERTIES VERSION %{version} SOVERSION 0)' >>CMakeLists.txt
+# OpenFst >= 1.8 dropped fst/types.h; kaldi-types.h needs this define.
+echo 'target_compile_definitions(vosk PRIVATE OPENFST_VER=10805)' >>CMakeLists.txt
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}*
